@@ -1,26 +1,13 @@
 import avatarDefault from '../images/avatar.jpg';
 
-function Main() {
-
-  function handleEditAvatarClick() {
-    document.querySelector('#popupEditAvatar').classList.add('popup_opened');
-  }
-
-  function handleEditProfileClick() {
-    document.querySelector('#popupEditProfile').classList.add('popup_opened');
-  }
-
-  function handleAddPlaceClick() {
-    document.querySelector('#popupAddCard').classList.add('popup_opened');
-  }
-
+function Main(props) {
   return (
     <main className="content">
       <section className="profile">
         <button 
           className="profile__avatar-edit-button"
           type="button"
-          onClick={handleEditAvatarClick}
+          onClick={props.onEditAvatar}
         >
           <img className="profile__avatar" src={avatarDefault} alt="Аватар пользователя" />
         </button>
@@ -29,14 +16,14 @@ function Main() {
           <button
             className="profile__edit-button"
             type="button"
-            onClick={handleEditProfileClick}
+            onClick={props.onEditProfile}
           ></button>
           <p className="profile__job">Исследователь океана</p>
         </div>
         <button
           className="profile__add-button"
           type="button"
-          onClick={handleAddPlaceClick}
+          onClick={props.onAddPlace}
         ></button>
       </section>
       <section className="elements">
