@@ -9,6 +9,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [selectedCard, handleCardClick] = useState(null);
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -26,6 +27,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
+    handleCardClick(null);
   }
 
   return (
@@ -35,6 +37,7 @@ function App() {
         onEditAvatar={handleEditAvatarClick}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
+        onCardClick={handleCardClick}
       />
       <Footer/>
       
@@ -75,13 +78,10 @@ function App() {
         <span className="popup__input-error" id="input-link-error"></span>
       </PopupWithForm>
 
-      <div className="popup popup_type_show-photo" id="popupShowPhoto">
-        <figure className="popup__figure">
-          <button className="popup__close-button" type="button"></button>
-          <img className="popup__photo" src="#" alt="Название" />
-          <figcaption className="popup__caption">Название</figcaption>
-        </figure>
-      </div>
+      <ImagePopup
+        card={selectedCard}
+        onClose={closeAllPopups}
+      />
 
       <div className="popup" id="popupConfirm">
         <div className="popup__container">
@@ -92,22 +92,6 @@ function App() {
           </form>
         </div>
       </div>
-
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-      
     </>
   );
 }

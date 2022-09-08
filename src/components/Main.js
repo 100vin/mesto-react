@@ -1,6 +1,25 @@
+import { useEffect, useState } from 'react';
 import avatarDefault from '../images/avatar.jpg';
+import Card from './Card';
+import api from '../utils/api';
 
 function Main(props) {
+  const [userName, setUserName] = useState('Жак-Ив Кусто');
+  const [userDescription, setUserDescription] = useState('Исследователь океана');
+  const [userAvatar, setUserAvatar] = useState(avatarDefault);
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([userData, initialCards]) => {
+        setUserName(userData.name);
+        setUserDescription(userData.about);
+        setUserAvatar(userData.avatar);
+        setCards(initialCards);
+      })
+      .catch(err => console.log(err));
+  }, []);
+
   return (
     <main className="content">
       <section className="profile">
@@ -9,16 +28,16 @@ function Main(props) {
           type="button"
           onClick={props.onEditAvatar}
         >
-          <img className="profile__avatar" src={avatarDefault} alt="Аватар пользователя" />
+          <img className="profile__avatar" src={userAvatar} alt="Аватар пользователя" />
         </button>
         <div className="profile__info">
-          <h1 className="profile__name">Жак-Ив Кусто</h1>
+          <h1 className="profile__name">{userName}</h1>
           <button
             className="profile__edit-button"
             type="button"
             onClick={props.onEditProfile}
           ></button>
-          <p className="profile__job">Исследователь океана</p>
+          <p className="profile__job">{userDescription}</p>
         </div>
         <button
           className="profile__add-button"
@@ -28,19 +47,13 @@ function Main(props) {
       </section>
       <section className="elements">
         <ul className="elements__list">
-          <template id="cardTemplate">
-            <li className="elements__item element">
-              <img className="element__image" src="#" alt="" />
-              <button className="element__remove-button" type="button" title="Удалить"></button>
-              <div className="element__info">
-                <h2 className="element__name"></h2>
-                <div className="element__like">
-                  <button className="element__like-button" type="button"></button>
-                  <span className="element__like-amount">0</span>
-                </div>
-              </div>
-            </li>
-          </template>
+          {cards.map(card => (
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={props.onCardClick}
+            />
+          ))}
         </ul>
       </section>
     </main>
