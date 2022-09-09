@@ -3,7 +3,7 @@ import avatarDefault from '../images/avatar.jpg';
 import Card from './Card';
 import api from '../utils/api';
 
-function Main(props) {
+function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
   const [userName, setUserName] = useState('Жак-Ив Кусто');
   const [userDescription, setUserDescription] = useState('Исследователь океана');
   const [userAvatar, setUserAvatar] = useState(avatarDefault);
@@ -26,7 +26,7 @@ function Main(props) {
         <button 
           className="profile__avatar-edit-button"
           type="button"
-          onClick={props.onEditAvatar}
+          onClick={onEditAvatar}
         >
           <img className="profile__avatar" src={userAvatar} alt="Аватар пользователя" />
         </button>
@@ -35,14 +35,14 @@ function Main(props) {
           <button
             className="profile__edit-button"
             type="button"
-            onClick={props.onEditProfile}
+            onClick={onEditProfile}
           ></button>
           <p className="profile__job">{userDescription}</p>
         </div>
         <button
           className="profile__add-button"
           type="button"
-          onClick={props.onAddPlace}
+          onClick={onAddPlace}
         ></button>
       </section>
       <section className="elements">
@@ -51,7 +51,7 @@ function Main(props) {
             <Card
               key={card._id}
               card={card}
-              onCardClick={props.onCardClick}
+              onCardClick={onCardClick}
             />
           ))}
         </ul>

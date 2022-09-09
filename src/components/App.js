@@ -63,9 +63,9 @@ function App() {
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
       >
-        <input className="popup__input" id="input-name" name="name" type="text" value="" minlength="2" maxlength="40" placeholder="Имя" required />
+        <input className="popup__input" id="input-name" name="name" type="text" value="" minLength="2" maxLength="40" placeholder="Имя" required />
         <span className="popup__input-error" id="input-name-error"></span>
-        <input className="popup__input" id="input-job" name="job" type="text" value="" minlength="2" maxlength="200" placeholder="О себе" required />
+        <input className="popup__input" id="input-job" name="job" type="text" value="" minLength="2" maxLength="200" placeholder="О себе" required />
         <span className="popup__input-error" id="input-job-error"></span>
       </PopupWithForm>
 
@@ -76,7 +76,7 @@ function App() {
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
       >
-        <input className="popup__input" id="input-title" name="title" type="text" value="" minlength="2" maxlength="30" placeholder="Название" required />
+        <input className="popup__input" id="input-title" name="title" type="text" value="" minLength="2" maxLength="30" placeholder="Название" required />
         <span className="popup__input-error" id="input-title-error"></span>
         <input className="popup__input" id="input-link" name="link" type="url" value="" placeholder="Ссылка на картинку" required />
         <span className="popup__input-error" id="input-link-error"></span>
@@ -87,15 +87,12 @@ function App() {
         onClose={closeAllPopups}
       />
 
-      {/* <div className="popup" id="popupConfirm">
-        <div className="popup__container">
-          <button className="popup__close-button" type="button"></button>
-          <h2 className="popup__title popup__title_type_cofirm">Вы уверены?</h2>
-          <form className="popup__form" name="formConfirm">
-            <button className="popup__submit" type="submit">Да</button>
-          </form>
-        </div>
-      </div> */}
+      <PopupWithForm
+        name="Confirm"
+        title="Вы уверены?"
+        buttonText="Да"
+        onClose={closeAllPopups}
+      />
     </>
   );
 }
