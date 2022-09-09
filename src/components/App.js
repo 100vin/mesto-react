@@ -9,7 +9,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
-  const [selectedCard, handleCardClick] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -23,11 +23,15 @@ function App() {
     setAddPlacePopupOpen(true);
   }
   
+  function handleCardClick(card) {
+    setSelectedCard(card);
+  }
+  
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
-    handleCardClick(null);
+    setSelectedCard(null);
   }
 
   return (
@@ -83,7 +87,7 @@ function App() {
         onClose={closeAllPopups}
       />
 
-      <div className="popup" id="popupConfirm">
+      {/* <div className="popup" id="popupConfirm">
         <div className="popup__container">
           <button className="popup__close-button" type="button"></button>
           <h2 className="popup__title popup__title_type_cofirm">Вы уверены?</h2>
@@ -91,7 +95,7 @@ function App() {
             <button className="popup__submit" type="submit">Да</button>
           </form>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

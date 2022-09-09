@@ -2,10 +2,10 @@ function Card(props) {
   function handleClick() {
     props.onCardClick(props.card);
   }
-
+  
   return (
     <li className="elements__item element">
-      <img className="element__image" src={props.card.link} alt={props.card.name} onClick={() => handleClick()} />
+      <img className="element__image" src={props.card.link} alt={props.card.name} onClick={handleClick} />
       <button className="element__remove-button" type="button" title="Удалить"></button>
       <div className="element__info">
         <h2 className="element__name">{props.card.name}</h2>
