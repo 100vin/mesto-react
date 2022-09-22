@@ -1,15 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm ';
+import EditProfilePopup from './EditProfilePopup';
 import ImagePopup from './ImagePopup';
+import api from '../utils/api';
+import avatarDefault from '../images/avatar.jpg';
 
 function App() {
+  const [currentUser, setCurrentUser] = useState({
+    name: 'Жак-Ив Кусто',
+    about: 'Исследователь океана',
+    avatar: avatarDefault,
+  });
+  const [cards, setCards] = useState([]);
+
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+
+  useEffect(() => {
+    Promise.all([
+      api.getUserInfo(), 
+      api.getInitialCards()
+    ])
+    .then(([userData, initialCards]) => {
+      setCurrentUser(userData);
+      setCards(initialCards);
+    })
+    .catch(err => console.log(err));
+  }, []);
+
+  function closeAllPopups() {
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setSelectedCard(null);
+  }
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -26,16 +56,18 @@ function App() {
   function handleCardClick(card) {
     setSelectedCard(card);
   }
-  
-  function closeAllPopups() {
-    setEditAvatarPopupOpen(false);
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setSelectedCard(null);
-  }
 
+  function handleUpdateUser(userData) {
+    api.changeUserInfo(userData)
+      .then(newUserData => {
+        setCurrentUser(newUserData);
+      })
+      .catch(err => console.log(err))
+      .finally(() => closeAllPopups());
+  }
+  
   return (
-    <>
+    <CurrentUserContext.Provider value={currentUser}>
       <Header/>
       <Main
         onEditAvatar={handleEditAvatarClick}
@@ -56,18 +88,11 @@ function App() {
         <span className="popup__input-error" id="input-avatarlink-error"></span>
       </PopupWithForm>
 
-      <PopupWithForm
-        name="EditProfile"
-        title="Редактировать профиль"
-        buttonText="Сохранить"
+      <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
-      >
-        <input className="popup__input" id="input-name" name="name" type="text" value="" minLength="2" maxLength="40" placeholder="Имя" required />
-        <span className="popup__input-error" id="input-name-error"></span>
-        <input className="popup__input" id="input-job" name="job" type="text" value="" minLength="2" maxLength="200" placeholder="О себе" required />
-        <span className="popup__input-error" id="input-job-error"></span>
-      </PopupWithForm>
+        onUpdateUser={handleUpdateUser}
+      />
 
       <PopupWithForm
         name="AddCard"
@@ -93,7 +118,7 @@ function App() {
         buttonText="Да"
         onClose={closeAllPopups}
       />
-    </>
+    </CurrentUserContext.Provider>
   );
 }
 
